@@ -49,13 +49,35 @@ func mainDay3(input string) string {
 
 	sum := 0
 
-	for _, n := range numbers {
+	/*for _, n := range numbers {
 		if checkForSymbol(input, n) {
 			sum += n.num
+		}
+	}*/
+
+	for i, line := range lines {
+		for j, char := range line {
+			if char == '*' {
+				nums := getAdjacentNumbers(numbers, j, i)
+				if len(nums) == 2 {
+					sum += nums[0] * nums[1]
+				}
+			}
 		}
 	}
 
 	return strconv.Itoa(sum)
+}
+
+func getAdjacentNumbers(numbers []number, x, y int) (nums []int) {
+	for _, n := range numbers {
+		if x >= n.posxStart-1 && x <= n.posxEnd {
+			if y == n.posy+1 || y == n.posy || y == n.posy-1 {
+				nums = append(nums, n.num)
+			}
+		}
+	}
+	return
 }
 
 func checkForSymbol(schematic string, n number) bool {
