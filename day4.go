@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -10,31 +9,35 @@ import (
 func mainDay4(input string) string {
 	lines := strings.Split(input, "\n")
 
-	sum := 0
+	numOfCards := make([]int, 0, len(lines))
+	for i := 0; i < len(lines); i++ {
+		numOfCards = append(numOfCards, 1)
+	}
+
 	for i, line := range lines {
 		line = strings.Split(line, ":")[1]
 		split := strings.Split(line, " |")
 
 		var re = regexp.MustCompile(`(?m) (..)`)
 
-		//FIXME: i am splitting empty thingies
 		cardNums := re.FindAllString(split[0], -1)
 		winningNums := re.FindAllString(split[1], -1)
 
-		points := 0
+		matches := 0
 		for _, num := range cardNums {
 			if isInArray(winningNums, num) {
-				if points > 0 {
-					points *= 2
-				} else {
-					points = 1
-				}
+				matches += 1
 			}
 		}
 
-		fmt.Printf("Day %d: %d\n", i+1, points)
+		for j := i; j < i+matches; j++ {
+			numOfCards[j+1] += numOfCards[i]
+		}
+	}
 
-		sum += points
+	sum := 0
+	for _, n := range numOfCards {
+		sum += n
 	}
 
 	return strconv.Itoa(sum)
