@@ -15,7 +15,7 @@ var Cyan = "\033[36m"
 var Gray = "\033[37m"
 var White = "\033[97m"
 
-// //go:embed input6
+//go:embed input6
 var content string
 
 func main() {
