@@ -27,6 +27,15 @@ func mainDay5(input string) string {
 		return i
 	})
 
+	newSeeds := make([]int64, 0, len(seeds)/2)
+	for i := 0; i < len(seeds); i += 2 {
+		for j := int64(0); j < seeds[i+1]; j++ {
+			newSeeds = append(newSeeds, seeds[i]+j)
+		}
+	}
+
+	seeds = newSeeds
+
 	for _, category := range categories {
 		ranges := Map(strings.Split(category, "\n")[1:], func(r string) intRange {
 			nums := Map(strings.Split(r, " "), func(t string) int64 {
@@ -62,7 +71,6 @@ func mainDay5(input string) string {
 
 	var minLoc int64 = math.MaxInt64
 	for _, seed := range seeds {
-		println(seed)
 		if seed < minLoc {
 			minLoc = seed
 		}
