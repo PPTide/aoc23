@@ -9,7 +9,7 @@ func TestMainDay6(t *testing.T) {
 
 	out := mainDay6(in)
 
-	if out != "288" {
+	if out != "71503" {
 		t.Fatalf("expected output \"288\" got \"%s\"", out)
 	}
 }

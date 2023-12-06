@@ -11,47 +11,47 @@ func mainDay6(in string) string {
 	times := strings.Split(lines[0], " ")[1:]
 	dists := strings.Split(lines[1], " ")[1:]
 
-	ts := Map(removeEmptyStringFromSlice(times), func(t string) int {
-		i, err := strconv.Atoi(t)
-		if err != nil {
-			panic(err)
-		}
-		return i
-	})
-	ds := Map(removeEmptyStringFromSlice(dists), func(t string) int {
-		i, err := strconv.Atoi(t)
-		if err != nil {
-			panic(err)
-		}
-		return i
-	})
+	timeStr := ""
+	distStr := ""
 
-	if len(ts) != len(ds) {
-		panic("not the same amount of times and distances")
+	for _, time := range times {
+		if len(time) > 0 {
+			timeStr += time
+		}
 	}
 
-	prod := 1
-
-	for i, time := range ts {
-		posibilities := 0
-
-		for j := 1; true; j++ {
-			dist := calculateDistance(j, time)
-			if dist <= ds[i] && j < time {
-				continue
-			}
-			if dist <= ds[i] {
-				break
-			}
-			fmt.Printf("%d (dist: %d), ", j, dist)
-			posibilities += 1
+	for _, dist := range dists {
+		if len(dist) > 0 {
+			distStr += dist
 		}
-
-		fmt.Printf(": %d\n", posibilities)
-		prod *= posibilities
 	}
 
-	return strconv.Itoa(prod)
+	time, err := strconv.Atoi(timeStr)
+	if err != nil {
+		panic(err)
+	}
+	dist, err := strconv.Atoi(distStr)
+	if err != nil {
+		panic(err)
+	}
+
+	posibilities := 0
+
+	for j := 1; true; j++ {
+		calcDist := calculateDistance(j, time)
+		if calcDist <= dist && j < time {
+			continue
+		}
+		if calcDist <= dist {
+			break
+		}
+		//fmt.Printf("%d (dist: %d), ", j, dist)
+		posibilities += 1
+	}
+
+	fmt.Printf(": %d\n", posibilities)
+
+	return strconv.Itoa(posibilities)
 }
 
 func calculateDistance(timeHeld int, maxTime int) int {
