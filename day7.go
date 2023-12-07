@@ -47,12 +47,18 @@ func mainDay7(in string) string {
 
 func (h hand) value() int {
 	cardAmounts := make([]int, 15)
+	jokers := 0
 
 	for _, c := range h.hand {
+		if c == 'J' {
+			jokers++
+			continue
+		}
 		cardAmounts[cardToValue(c)]++
 	}
 
 	sort.Sort(sort.Reverse(sort.IntSlice(cardAmounts)))
+	cardAmounts[0] += jokers
 
 	if cardAmounts[0] == 5 { // five of a kind
 		return 6
@@ -84,7 +90,7 @@ func cardToValue(c rune) int {
 	case 'T':
 		return 10
 	case 'J':
-		return 11
+		return -1
 	case 'Q':
 		return 12
 	case 'K':
