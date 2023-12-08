@@ -1,8 +1,8 @@
 package main
 
 import (
+	"fmt"
 	"regexp"
-	"strconv"
 	"strings"
 )
 
@@ -19,32 +19,42 @@ func mainDay8(in string) string {
 	instruction := lines[0]
 	nodes := make(map[string]node)
 
+	startNodes := make([]node, 0)
+
 	var re = regexp.MustCompile(`(?m)(...) = \((...), (...)\)`)
 	for _, line := range lines[2:] {
 		matches := re.FindStringSubmatch(line)[1:]
 
-		nodes[matches[0]] = node{
+		n := node{
 			name:  matches[0],
 			left:  matches[1],
 			right: matches[2],
 		}
-	}
 
-	i := 0
-	n := nodes["AAA"]
-	for true {
-		if instruction[i%len(instruction)] == 'L' {
-			n = nodes[n.left]
-		} else { // Fuck error handling xD
-			n = nodes[n.right]
-		}
-
-		i++
-
-		if n.name == "ZZZ" {
-			break
+		nodes[matches[0]] = n
+		if n.name[2] == 'A' {
+			startNodes = append(startNodes, n)
 		}
 	}
 
-	return strconv.Itoa(i)
+	lens := make([]int, 0)
+	for _, n := range startNodes {
+		i := 0
+		for true {
+			if instruction[i%len(instruction)] == 'L' {
+				n = nodes[n.left]
+			} else { // Fuck error handling xD
+				n = nodes[n.right]
+			}
+
+			i++
+
+			if n.name[2] == 'Z' {
+				break
+			}
+		}
+		lens = append(lens, i)
+	}
+
+	return "Please find the LCM: " + fmt.Sprint(lens)
 }
