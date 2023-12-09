@@ -30,7 +30,7 @@ func mainDay9(in string) string {
 		//fmt.Println(derivatives)
 		prevVal := 0
 		for i := len(derivatives) - 1; i >= 0; i-- {
-			prevVal = derivatives[i][len(derivatives[i])-1] + prevVal
+			prevVal = derivatives[i][0] - prevVal
 		}
 
 		sum += prevVal
