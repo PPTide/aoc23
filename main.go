@@ -15,11 +15,11 @@ var Cyan = "\033[36m"
 var Gray = "\033[37m"
 var White = "\033[97m"
 
-//go:embed input9
+//go:embed input10
 var content string
 
 func main() {
-	out := mainDay9(content)
+	out := mainDay10(content)
 
 	fmt.Println(Green + out + Reset)
 }
