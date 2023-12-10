@@ -45,6 +45,8 @@ type pos struct {
 }
 
 func mainDay10(in string) string {
+	// doesn't give the correct answer... you have to check each red number xD (worked for me lol)
+
 	lines := strings.Split(in, "\n")
 
 	var start pos
