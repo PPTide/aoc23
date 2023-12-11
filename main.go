@@ -45,7 +45,7 @@ func main() {
 		os.WriteFile("input"+day, content, 0666)
 	}
 
-	out := mainDay11(string(content))
+	out := mainDay11(string(content), 1000000)
 
 	fmt.Println(Green + out + Reset)
 }

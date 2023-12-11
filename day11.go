@@ -6,40 +6,34 @@ import (
 	"strings"
 )
 
-func mainDay11(in string) string {
+func mainDay11(in string, expansionVal int) string {
 	lines := strings.Split(in, "\n")
 
-	newLines := make([]string, 0)
+	lineHeights := make([]int, 0, len(lines))
 
 outer:
 	for _, line := range lines {
-		newLines = append(newLines, line)
 		for _, c := range line {
 			if c == '#' {
+				lineHeights = append(lineHeights, 1)
 				continue outer
 			}
 		}
-		newLines = append(newLines, line)
+		lineHeights = append(lineHeights, expansionVal)
 	}
 
-	lines = newLines
+	colWidths := make([]int, 0, len(lines[0]))
 
 outer2:
-	for i := len(lines[0]) - 1; i >= 0; i-- {
+	for i := range lines[0] {
 		for _, line := range lines {
 			if line[i] == '#' {
+				colWidths = append(colWidths, 1)
 				continue outer2
 			}
 		}
 
-		for j, line := range lines {
-			newLine := make([]uint8, 0, len(lines[0]))
-
-			newLine = append([]uint8(line[:i]), '.')
-			newLine = append(newLine, []uint8(line[i:])...)
-
-			lines[j] = string(newLine)
-		}
+		colWidths = append(colWidths, expansionVal)
 	}
 
 	// --------------- Calculate all distances -------------------
@@ -60,8 +54,12 @@ outer2:
 
 	for i, position1 := range positions {
 		for _, position2 := range positions[i:] {
-			sum += Abs(position1.x - position2.x)
-			sum += Abs(position1.y - position2.y)
+			for _, i2 := range sliceSlice(lineHeights, position1.y, position2.y) {
+				sum += i2
+			}
+			for _, i2 := range sliceSlice(colWidths, position1.x, position2.x) {
+				sum += i2
+			}
 		}
 	}
 
@@ -73,4 +71,11 @@ func Abs[T constraints.Integer](x T) T {
 		return -x
 	}
 	return x
+}
+
+func sliceSlice[T any](s []T, a, b int) []T {
+	if a < b {
+		return s[a:b]
+	}
+	return s[b:a]
 }
