@@ -14,18 +14,9 @@ outer:
 	for _, part := range parts {
 		rows := strings.Split(part, "\n")
 
-		lastRow := ""
-		duplicateRowNums := make([]int, 0)
-		for i, row := range rows {
-			if row == lastRow {
-				duplicateRowNums = append(duplicateRowNums, i-1)
-			}
-			lastRow = row
-		}
-
-		for _, num := range duplicateRowNums {
-			if isMirrored(rows, num) {
-				sumRow += num + 1
+		for i := 0; i < len(rows)-1; i++ {
+			if isMirrored(rows, i) {
+				sumRow += i + 1
 				continue outer
 			}
 		}
@@ -41,18 +32,9 @@ outer:
 			return string(t)
 		})
 
-		lastCol := ""
-		duplicateColNums := make([]int, 0)
-		for i, col := range cols {
-			if col == lastCol {
-				duplicateColNums = append(duplicateColNums, i-1)
-			}
-			lastCol = col
-		}
-
-		for _, num := range duplicateColNums {
-			if isMirrored(cols, num) {
-				sumCol += num + 1
+		for i := 0; i < len(cols)-1; i++ {
+			if isMirrored(cols, i) {
+				sumCol += i + 1
 				continue outer
 			}
 		}
@@ -69,10 +51,27 @@ func isMirrored(rows []string, upperIndex int) bool {
 		loopCount = len(rows) - upperIndex - 2
 	}
 
+	smudges := 0
+
 	for i := 0; i <= loopCount; i++ {
 		if rows[upperIndex-i] != rows[upperIndex+1+i] {
-			return false
+			smudges += countDifferences(rows[upperIndex-i], rows[upperIndex+1+i])
+			if smudges > 1 {
+				return false
+			}
 		}
 	}
+	if smudges == 0 {
+		return false
+	}
 	return true
+}
+
+func countDifferences(a, b string) (diffs int) {
+	for i := range a {
+		if a[i] != b[i] {
+			diffs += 1
+		}
+	}
+	return
 }
