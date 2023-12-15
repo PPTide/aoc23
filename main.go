@@ -22,7 +22,7 @@ var White = "\033[97m"
 var cookies = "session=53616c7465645f5f00da9b7b7e8a3118d029485d123f6a6bb8f0d3034220832735e03d0129a6e72acefc160c10d0805aa2ab817b8fb8507b436d17fd5fa8c5b5"
 
 func main() {
-	day := "13"
+	day := "15"
 
 	file, err := os.Open("input" + day)
 
@@ -45,7 +45,7 @@ func main() {
 		os.WriteFile("input"+day, content, 0666)
 	}
 
-	out := mainDay13(string(content))
+	out := mainDay15(string(content))
 
 	fmt.Println(Green + out + Reset)
 }
