@@ -12,3 +12,14 @@ func TestMainDay15(t *testing.T) {
 		t.Fatalf("expected output \"%s\" got \"%s\"", expectedOut, out)
 	}
 }
+
+func TestHashDay15(t *testing.T) {
+	in := "HASH"
+
+	out := hash(in)
+	expectedOut := 52
+
+	if out != expectedOut {
+		t.Fatalf("expected output \"%d\" got \"%d\"", expectedOut, out)
+	}
+}
