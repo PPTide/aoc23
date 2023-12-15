@@ -1,16 +1,59 @@
 package main
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 )
 
+type lens struct {
+	label    string
+	focalLen int
+}
+
 func mainDay15(in string) string {
+	boxes := make([][]lens, 256)
+
+outer:
+	for _, s := range strings.Split(in, ",") {
+		//fmt.Println(boxes)
+		if strings.ContainsRune(s, '=') {
+			split := strings.Split(s, "=")
+			label := split[0]
+			fLen, _ := strconv.Atoi(split[1])
+			l := lens{
+				label:    split[0],
+				focalLen: fLen,
+			}
+			for i, l2 := range boxes[hash(label)] {
+				if l2.label == l.label {
+					boxes[hash(label)][i] = l
+					continue outer
+				}
+			}
+			boxes[hash(label)] = append(boxes[hash(label)], l)
+			continue outer
+		}
+		split := strings.Split(s, "-")
+		label := split[0]
+		for i, l := range boxes[hash(label)] {
+			if l.label == label {
+				//fmt.Println(label)
+				//fmt.Println(boxes)
+				boxes[hash(label)] = append(boxes[hash(label)][:i], boxes[hash(label)][i+1:]...)
+			}
+		}
+
+	}
+
+	fmt.Println(boxes)
+
 	sum := 0
 
-	for _, s := range strings.Split(in, ",") {
-		h := hash(s)
-		sum += h
+	for i, box := range boxes {
+		for j, l := range box {
+			sum += (i + 1) * (j + 1) * l.focalLen
+		}
 	}
 
 	return strconv.Itoa(sum)
