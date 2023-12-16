@@ -1,6 +1,7 @@
 package main
 
 import (
+	"reflect"
 	"strconv"
 	"strings"
 )
@@ -160,9 +161,9 @@ func niceChar(c rune) rune {
 	}
 }
 
-func inSlice[T comparable](a T, list []T) bool {
+func inSlice[T any](a T, list []T) bool {
 	for _, b := range list {
-		if b == a {
+		if reflect.DeepEqual(b, a) {
 			return true
 		}
 	}
