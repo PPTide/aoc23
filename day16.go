@@ -10,11 +10,40 @@ var visited [][][]dir
 func mainDay16(in string) string {
 	lines := strings.Split(in, "\n")
 
-	currentPos := pos{
-		x: -1,
-		y: 0,
+	bestSum := 0
+
+	for y := range lines {
+		for _, currentDir := range []dir{left, right} {
+			sum := getEnergizedCount(currentDir, pos{x: 0, y: y}, lines)
+			if sum > bestSum {
+				bestSum = sum
+			}
+		}
 	}
-	currentDir := right
+
+	for x := range lines[0] {
+		for _, currentDir := range []dir{up, down} {
+			sum := getEnergizedCount(currentDir, pos{x: x, y: 0}, lines)
+			if sum > bestSum {
+				bestSum = sum
+			}
+		}
+	}
+
+	return strconv.Itoa(bestSum)
+}
+
+func getEnergizedCount(currentDir dir, currentPos pos, lines []string) int {
+	switch currentDir {
+	case up:
+		currentPos.y = len(lines)
+	case right:
+		currentPos.x = -1
+	case down:
+		currentPos.y = -1
+	case left:
+		currentPos.x = len(lines[0])
+	}
 
 	visited = make([][][]dir, len(lines))
 
@@ -35,8 +64,7 @@ func mainDay16(in string) string {
 			}
 		}
 	}
-
-	return strconv.Itoa(sum)
+	return sum
 }
 
 func walkPath(startPos pos, startDir dir, lines []string) {
